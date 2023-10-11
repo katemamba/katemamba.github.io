@@ -62,6 +62,8 @@
     </form>
     <hr>
     <h2>Recent Expenses</h2>
+    <ul></ul>
+    <button type="button" onclick="fetchAndDisplayExpenses()">Fetch Expenses</button>
     <ul id="expenses-list">
         <!-- Display list of expenses here -->
     </ul>
@@ -126,9 +128,20 @@
     // Initialize list of expenses
     fetchExpenses();
 
+    function fetchAndDisplayExpenses() {
+       fetchExpenses().then((expenses) => {
+    const ul = document.querySelector('.recent-expenses ul');
+    ul.innerHTML = '';
+    expenses.forEach((expense) => {
+      const li = document.createElement('li');
+      li.innerText = `${expense.name}: ${expense.amount}`;
+      ul.appendChild(li);
+    });
+  });
+}
+
     // Listen for form submission
     document.querySelector('.add-expense').addEventListener('click', addExpense);
-    document.querySelector('.expenses-list').addEventListener('click', fetchExpenses);
     </script>
 </body>
 </html>
