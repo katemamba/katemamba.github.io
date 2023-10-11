@@ -107,26 +107,31 @@
 
     // Function to fetch expenses from API and display them in list
     function fetchExpenses() {
-      axios.get('/api/expenses')
-        .then(response => {
-          const expenses = response.data;
-          console.log(expenses);
+  if (expenses !== []) {
+    // Use expenses from local variable
+    renderExpenses(expenses);
+  } else {
+    // Fetch expenses from API
+    axios.get('/api/expenses')
+      .then(response => {
+        expenses = response.data;
+        renderExpenses(expenses);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
 
-          // Loop through expenses array and create list items
-          expenses.forEach(expense => {
-            const li = document.createElement('li');
-            li.textContent = `${expense.name}: ${expense.amount}`;
-            li.classList.add('expense-item');
-            document.getElementById('expenses-list').appendChild(li);
-          });
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
-
-    // Initialize list of expenses
-    fetchExpenses();
+function renderExpenses(expenses) {
+  // Loop through expenses array and create list items
+  expenses.forEach(expense => {
+    const li = document.createElement('li');
+    li.textContent = `${expense.name}: ${expense.amount}`;
+    li.classList.add('expense-item');
+    document.getElementById('expenses-list').appendChild(li);
+  });
+}
 
     function fetchAndDisplayExpenses() {
        fetchExpenses().then((expenses) => {
