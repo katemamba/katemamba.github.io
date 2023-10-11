@@ -58,11 +58,13 @@
             <label for="amount">Amount</label>
             <input type="number" id="amount" name="amount">
         </div>
-        <button type="submit">Add Expense</button>
+        <button type="submit"><a href="#" class="add-expense"/>Add Expense</button>
     </form>
     <hr>
     <h2>Recent Expenses</h2>
-    <ul></ul>
+    <ul id="expenses-list">
+        <!-- Display list of expenses here -->
+    </ul>
 </div>
 
 <!-- Add JavaScript code below -->
@@ -89,6 +91,54 @@
                 { category: 'Shopping', amount: 34.21 }
             ];
         }
+        const url = 'https://katemamba.github.io/expenses/';
+
+    // Function to fetch expenses from API and display them in list
+    function fetchExpenses() {
+      axios.get(url)
+        .then(response => {
+          const expenses = response.data;
+          console.log(expenses);
+
+          // Loop through expenses array and create list items
+          expenses.forEach(expense => {
+            const li = document.createElement('li');
+            li.textContent = `${expense.name}: ${expense.amount}`;
+            li.classList.add('expense-item');
+            document.getElementById('expenses-list').appendChild(li);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+    // Function to add new expense and fetch updated list of expenses
+    function addExpense() {
+      const name = document.getElementById('name').value;
+      const amount = document.getElementById('amount').value;
+
+      // Create new expense object
+      const expense = { name, amount };
+
+      // Post new expense to API
+      axios.post(url, expense)
+        .then(response => {
+          console.log(response);
+
+          // Fetch updated list of expenses
+          fetchExpenses();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+    // Initialize list of expenses
+    fetchExpenses();
+
+    // Listen for form submission
+    document.querySelector('.add-expense').addEventListener('click', addExpense);
     </script>
 </body>
 </html>
