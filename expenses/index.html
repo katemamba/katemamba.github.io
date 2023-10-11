@@ -58,7 +58,7 @@
             <label for="amount">Amount</label>
             <input type="number" id="amount" name="amount">
         </div>
-        <button type="submit"><a href="#" class="add-expense"/>Add Expense</button>
+        <button type="submit"><a href="#" class="add-expense" onclick="addExpense()"/>Add Expense</button>
     </form>
     <hr>
     <h2>Recent Expenses</h2>
@@ -72,6 +72,11 @@
 <script>
  // Initialize empty expenses array
     let expenses = [];
+    // Get the button element
+    const addExpenseButton = document.querySelector('.add-expense');
+
+    // Add an event listener to the button's click event
+    addExpenseButton.addEventListener('click', addExpense);
 
     // Function to add new expense and fetch updated list of expenses
     function addExpense() {
